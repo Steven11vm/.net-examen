@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/apple-icon.png">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Consumiendo peajes</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="css/nucleo-icons.css" rel="stylesheet" />
+    <link href="css/nucleo-svg.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="css/nucleo-svg.css" rel="stylesheet" />
+    <link id="pagestyle" href="css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+    <style>
+        .Btn-shadow {
+            background-color: #007bff;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .Btn-delete8 {
+            background-color: #f44336;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .Btn-update {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .input-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-box-correcto input {
+            border: 2px solid green;
+        }
+
+        .input-box-incorrecto input {
+            border: 2px solid red;
+        }
+
+        .formulario__input-error {
+            display: none;
+            color: red;
+            font-size: 14px;
+        }
+
+        .formulario__input-error-activo {
+            display: block;
+        }
+        
+        .titulo-registrar {
+            background-color: lightblue;
+            text-align: left;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .formulario-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .Btn-registrar {
+            background-color: black;
+            color: white;
+            border-radius: 10px;
+            padding: 3px 3px;
+        }
+
+        .Btn-delete8 {
+            text-decoration: none;
+            text-align: center;
+            margin-left: 15px;
+        }
+        .input-box input {
+            border-radius: 5px;
+            /* Otros estilos de tu preferencia */
+        }
+
+    </style>
+</head>
+
+<body class="g-sidenav-show bg-gray-100">
+    <div class="min-height-300 bg-primary position-absolute w-100"></div>
+    <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4"
+        id="sidenav-main">
+        <div class="sidenav-header">
+            <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+                aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0" href="#">
+                <img src="img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
+                <span class="ms-1 font-weight-bold">Crud peajes</span>
+            </a>
+        </div>
+        <hr class="horizontal dark mt-0">
+        <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <main class="main-content position-relative border-radius-lg ">
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+            data-scroll="false">
+            <div class="container-fluid py-1 px-3">
+                <nav aria-label="breadcrumb">
+                    <h6 class="font-weight-bolder text-white mb-0">Peajes</h6>
+                </nav>
+            </div>
+        </nav>
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                       <div class="card-header pb-0">
+    <h6 class="titulo-registrar">Registrar peajes</h6>
+</div>
+<div class="card-body px-0 pt-0 pb-2 formulario-container">
+    <form class="form-admin" action="#" id="formulario">
+        <div class="input-box" id="grupo__placa">
+            <label>Placa</label><br>
+            <input type="text" name="placa" id="placa">
+            <div class="formulario__input-error">Placa no valida</div>
+        </div>
+        <div class="input-box" id="grupo__nombre">
+            <label>Nombre peaje</label><br>
+            <select id="nombrePeaje" onchange="buscarValorPeaje()">
+            <!-- Opciones se llenarán dinámicamente -->
+        </select>
+        </div>
+        <div class="input-box" id="grupo__categoria">
+            <label>Categoria de tarifa</label><br>
+             <select id="idCategoriaTarifa" onchange="buscarValorPeaje()">
+            <option value="I">I</option>
+            <option value="II">II</option>
+            <option value="III">III</option>
+            <option value="IV">IV</option>
+            <option value="V">V</option>
+        </select>
+        </div>
+        <div class="input-box" id="grupo__valor">
+            <label>Valor</label><br>
+            <input type="text" name="valor" id="valor" readonly disabled>
+            </div>
+        <div class="input-box" id="grupo__fecha">
+            <label>Fecha</label><br>
+            <input type="text" name="fecha" id="fecha" placeholder="DD/MM/AAAA">
+            <div class="formulario__input-error">Fecha no válida</div>
+        </div>
+        <button class="Btn-registrar" type="submit">Registrar</button>
+        
+        <a type="button" href="/" class="Btn-delete8">Cerrar</a>
+    </form>
+</div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/core/popper.min.js"></script>
+    <script src="js/core/bootstrap.min.js"></script>
+    <script src="js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="js/plugins/chartjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+    let peajesData = [];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        axios.get('https://www.datos.gov.co/resource/7gj8-j6i3.json')
+            .then(function (response) {
+                peajesData = response.data;
+                let selectPeajes = document.getElementById('nombrePeaje');
+
+                let peajesUnicos = new Set();
+
+                peajesData.forEach(function (peaje) {
+                    if (peaje.peaje) {
+                        peajesUnicos.add(peaje.peaje);
+                    }
+                });
+
+                peajesUnicos.forEach(function (peaje) {
+                    var option = document.createElement('option');
+                    option.value = peaje;
+                    option.textContent = peaje;
+                    selectPeajes.appendChild(option);
+                });
+            })
+            .catch(function (error) {
+                console.error('Error al obtener la lista de peajes:', error);
+            });
+    });
+
+    function buscarValorPeaje() {
+        let nombrePeaje = document.getElementById('nombrePeaje').value;
+        let categoriaTarifa = document.getElementById('idCategoriaTarifa').value;
+        let valor = document.getElementById('valor');
+
+        let valorEncontrado = null;
+
+        for (let i = 0; i < peajesData.length; i++) {
+            let peaje = peajesData[i];
+            if (peaje.peaje === nombrePeaje && peaje.idcategoriatarifa === categoriaTarifa) {
+                valorEncontrado = peaje.valor;
+                break;
+            }
+        }
+
+        if (valorEncontrado !== null) {
+            valor.value = valorEncontrado;
+        } else {
+            valor.value = 'Valor no encontrado';
+        }
+    }
+
+    const formulario = document.getElementById('formulario');
+    const inputs = document.querySelectorAll('#formulario input, #formulario select');
+
+    const expresiones = {
+        placa: /^[A-Za-z0-9]{6}$/,
+        fecha: /^\d{2}\/\d{2}\/\d{4}$/
+    };
+
+    const campos = {
+        placa: false,
+        nombrePeaje: true, // Ahora no obligatorio
+        idCategoriaTarifa: true, // Ahora no obligatorio
+        valor: true, // Ahora no obligatorio
+        fecha: true,
+    };
+
+    const validarFormulario = (e) => {
+        switch (e.target.name) {
+            case "placa":
+                validarCampo(expresiones.placa, e.target, 'placa');
+                break;
+            case "nombrePeaje":
+                validarCampo(true, e.target, 'nombrePeaje'); // No se valida directamente aquí
+                break;
+            case "idCategoriaTarifa":
+                validarCampo(true, e.target, 'idCategoriaTarifa'); // No se valida directamente aquí
+                break;
+            case "valor":
+                validarCampo(true, e.target, 'valor'); // No se valida directamente aquí
+                break;
+            case "fecha":
+                validarCampo(expresiones.fecha, e.target, 'fecha');
+                break;
+        }
+    }
+
+    const validarCampo = (expresion, input, campo) => {
+        const grupoCampo = document.getElementById(`grupo__${campo}`);
+        const inputError = document.querySelector(`#grupo__${campo} .formulario__input-error`);
+
+        if ((expresion.test && expresion.test(input.value)) || campo === 'nombrePeaje' || campo === 'idCategoriaTarifa' || campo === 'valor' || campo === 'fecha') {
+            grupoCampo.classList.remove('input-box-incorrecto');
+            grupoCampo.classList.add('input-box-correcto');
+            inputError.classList.remove('formulario__input-error-activo');
+            campos[campo] = true;
+        } else {
+            grupoCampo.classList.add('input-box-incorrecto');
+            grupoCampo.classList.remove('input-box-correcto');
+            inputError.classList.add('formulario__input-error-activo');
+            campos[campo] = false;
+        }
+    }
+
+    inputs.forEach((input) => {
+        input.addEventListener('keyup', validarFormulario);
+        input.addEventListener('blur', validarFormulario);
+    });
+
+    formulario.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (campos.placa && campos.fecha) {
+        const placa = document.getElementById('placa').value;
+        const nombrePeaje = document.getElementById('nombrePeaje').value;
+        const idCategoriaTarifa = document.getElementById('idCategoriaTarifa').value;
+        const valor = document.getElementById('valor').value;
+        const fecha = document.getElementById('fecha').value;
+
+        // Validar formato de fecha DD/MM/AAAA
+        const regexFecha = /^\d{2}\/\d{2}\/\d{4}$/;
+        if (!regexFecha.test(fecha)) {
+            console.error('Formato de fecha inválido:', fecha);
+            // Mostrar mensaje de error o manejar de otra manera apropiada
+            return;
+        }
+
+        // Formatear la fecha en el formato esperado (AAAA-MM-DD)
+        const fechaFormateada = fecha.split('/').reverse().join('-');
+
+        const data = {
+            placa: placa,
+            fecha: fechaFormateada,
+            exportacion: true,
+        };
+
+        if (nombrePeaje) {
+            data.nombrePeaje = nombrePeaje;
+        }
+        if (idCategoriaTarifa) {
+            data.categoriaTarifaId = idCategoriaTarifa;
+        }
+        if (valor) {
+            data.valor = valor;
+        }
+
+        console.log('Datos enviados al servidor:', data);
+
+        try {
+            const response = await fetch('http://localhost:5013/api/Peaje', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                const errorDetails = await response.text();
+                throw new Error(`Error en la solicitud: ${errorDetails}`);
+            }
+
+            Swal.fire({
+                icon: "success",
+                title: "Exportación registrada correctamente",
+                showConfirmButton: false,
+                timer: 1500,
+                backdrop: false
+            }).then(() => {
+                window.location.href = '/';
+            });
+
+        } catch (error) {
+            console.error('Error al enviar la solicitud:', error);
+            Swal.fire({
+                icon: "error",
+                title: "Error al registrar la exportación",
+                text: error.message,
+                backdrop: false
+            });
+        }
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Formulario incompleto",
+            text: "Por favor, completa todos los campos correctamente.",
+            backdrop: false
+        });
+    }
+});
+
+
+</script>
+
+
+           
+</body>
+</html>

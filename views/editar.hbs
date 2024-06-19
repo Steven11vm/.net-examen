@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,6 +59,7 @@
         .formulario__input-error-activo {
             display: block;
         }
+
         .titulo-registrar {
             background-color: lightblue;
             text-align: left;
@@ -82,6 +85,7 @@
             text-align: center;
             margin-left: 15px;
         }
+
         .input-box input {
             border-radius: 5px;
             /* Otros estilos de tu preferencia */
@@ -134,38 +138,39 @@
                         </div>
                         <div class="card-body px-0 pt-0 pb-2 formulario-container">
                             <form class="form-admin" action="#" id="formulario">
-                                    <div class="input-box" id="grupo__placa">
-                                        <label>Placa</label><br>
-                                        <input type="text" name="placa" id="placa">
-                                        <div class="formulario__input-error">Placa no valida</div>
-                                    </div>
-                                    <div class="input-box" id="grupo__nombre">
-                                        <label>Nombre peaje</label><br>
-                                        <select id="nombrePeaje" onchange="buscarValorPeaje()">
+                                <div class="input-box" id="grupo__placa">
+                                    <label>Placa</label><br>
+                                    <input type="text" name="placa" id="placa">
+                                    <div class="formulario__input-error">Placa no válida</div>
+                                </div>
+                                <div class="input-box" id="grupo__nombre">
+                                    <label>Nombre peaje</label><br>
+                                    <select id="nombrePeaje" onchange="buscarValorPeaje()">
                                         <!-- Opciones se llenarán dinámicamente -->
                                     </select>
-                                    </div>
-                                    <div class="input-box" id="grupo__categoria">
-                                        <label>Categoria de tarifa</label><br>
-                                        <select id="idCategoriaTarifa" onchange="buscarValorPeaje()">
+                                </div>
+                                <div class="input-box" id="grupo__categoria">
+                                    <label>Categoría de tarifa</label><br>
+                                    <select id="idCategoriaTarifa" onchange="buscarValorPeaje()">
                                         <option value="I">I</option>
                                         <option value="II">II</option>
                                         <option value="III">III</option>
                                         <option value="IV">IV</option>
                                         <option value="V">V</option>
                                     </select>
-                                    </div>
-                                    <div class="input-box" id="grupo__valor">
-                                        <label>Valor</label><br>
-                                        <input type="text" name="valor" id="valor" readonly disabled>
-                                        </div>
-                                    <div class="input-box" id="grupo__fecha">
-                                        <label>Fecha dd/mm/aaaa</label><br>
-                                        <input type="text" name="fecha" id="fecha" >
-                                        <div class="formulario__input-error">Fecha no válida</div>
-                                    </div>
+                                </div>
+                                <div class="input-box" id="grupo__valor">
+                                    <label>Valor</label><br>
+                                    <input type="text" name="valor" id="valor" readonly disabled>
+                                </div>
+                                <div class="input-box" id="grupo__fecha">
+                                    <label>Fecha dd/mm/aaaa</label><br>
+                                    <input type="text" name="fecha" id="fecha">
+                                    <div class="formulario__input-error">Fecha no válida</div>
+                                </div>
                                 <button class="btn-editar2" id="btn-editar">Editar</button>
-                                <a type="button" href="/" class="Btn-delete8" style="text-decoration:none;text-align:center;margin-left:15px;">Cerrar</a>
+                                <a type="button" href="/" class="Btn-delete8"
+                                    style="text-decoration:none;text-align:center;margin-left:15px;">Cerrar</a>
                             </form>
                         </div>
                     </div>
@@ -183,54 +188,54 @@
     <script>
         let peajesData = [];
 
-    document.addEventListener('DOMContentLoaded', function () {
-        axios.get('https://www.datos.gov.co/resource/7gj8-j6i3.json')
-            .then(function (response) {
-                peajesData = response.data;
-                let selectPeajes = document.getElementById('nombrePeaje');
+        document.addEventListener('DOMContentLoaded', function () {
+            axios.get('https://www.datos.gov.co/resource/7gj8-j6i3.json')
+                .then(function (response) {
+                    peajesData = response.data;
+                    let selectPeajes = document.getElementById('nombrePeaje');
 
-                let peajesUnicos = new Set();
+                    let peajesUnicos = new Set();
 
-                peajesData.forEach(function (peaje) {
-                    if (peaje.peaje) {
-                        peajesUnicos.add(peaje.peaje);
-                    }
+                    peajesData.forEach(function (peaje) {
+                        if (peaje.peaje) {
+                            peajesUnicos.add(peaje.peaje);
+                        }
+                    });
+
+                    peajesUnicos.forEach(function (peaje) {
+                        var option = document.createElement('option');
+                        option.value = peaje;
+                        option.textContent = peaje;
+                        selectPeajes.appendChild(option);
+                    });
+                })
+                .catch(function (error) {
+                    console.error('Error al obtener la lista de peajes:', error);
                 });
+        });
 
-                peajesUnicos.forEach(function (peaje) {
-                    var option = document.createElement('option');
-                    option.value = peaje;
-                    option.textContent = peaje;
-                    selectPeajes.appendChild(option);
-                });
-            })
-            .catch(function (error) {
-                console.error('Error al obtener la lista de peajes:', error);
-            });
-    });
+        function buscarValorPeaje() {
+            let nombrePeaje = document.getElementById('nombrePeaje').value;
+            let categoriaTarifa = document.getElementById('idCategoriaTarifa').value;
+            let valor = document.getElementById('valor');
 
-    function buscarValorPeaje() {
-        let nombrePeaje = document.getElementById('nombrePeaje').value;
-        let categoriaTarifa = document.getElementById('idCategoriaTarifa').value;
-        let valor = document.getElementById('valor');
+            let valorEncontrado = null;
 
-        let valorEncontrado = null;
+            for (let i = 0; i < peajesData.length; i++) {
+                let peaje = peajesData[i];
+                if (peaje.peaje === nombrePeaje && peaje.idcategoriatarifa === categoriaTarifa) {
+                    valorEncontrado = peaje.valor;
+                    break;
+                }
+            }
 
-        for (let i = 0; i < peajesData.length; i++) {
-            let peaje = peajesData[i];
-            if (peaje.peaje === nombrePeaje && peaje.idcategoriatarifa === categoriaTarifa) {
-                valorEncontrado = peaje.valor;
-                break;
+            if (valorEncontrado !== null) {
+                valor.value = valorEncontrado;
+            } else {
+                valor.value = 'Valor no encontrado';
             }
         }
 
-        if (valorEncontrado !== null) {
-            valor.value = valorEncontrado;
-        } else {
-            valor.value = 'Valor no encontrado';
-        }
-    }
-        //////////
         const formulario = document.getElementById('formulario');
         const inputs = document.querySelectorAll('#formulario input');
 
@@ -250,20 +255,11 @@
         const validarFormulario = (e) => {
             switch (e.target.name) {
                 case "placa":
-                validarCampo(expresiones.placa, e.target, 'placa');
-                break;
-            case "nombrePeaje":
-                validarCampo(true, e.target, 'nombrePeaje'); // No se valida directamente aquí
-                break;
-            case "idCategoriaTarifa":
-                validarCampo(true, e.target, 'idCategoriaTarifa'); // No se valida directamente aquí
-                break;
-            case "valor":
-                validarCampo(true, e.target, 'valor'); // No se valida directamente aquí
-                break;
-            case "fecha":
-                validarCampo(expresiones.fecha, e.target, 'fecha');
-                break;
+                    validarCampo(expresiones.placa, e.target, 'placa');
+                    break;
+                case "fecha":
+                    validarCampo(expresiones.fecha, e.target, 'fecha');
+                    break;
             }
         }
 
@@ -295,143 +291,142 @@
         });
 
         document.addEventListener('DOMContentLoaded', async function () {
-    const apiUrl = 'http://localhost:5013/api/Peaje';
+            const apiUrl = 'http://localhost:5013/api/Peaje';
 
-    let idDelServicio;
+            let idDelServicio;
 
-    // Función para mostrar los detalles del servicio
-    async function mostrarDetalleServicio(id) {
-        try {
-            const response = await fetch(`${apiUrl}/${id}`);
-            if (!response.ok) throw new Error('Error en la respuesta de la API');
+            // Función para mostrar los detalles del servicio
+            async function mostrarDetalleServicio(id) {
+                try {
+                    const response = await fetch(`${apiUrl}/${id}`);
+                    if (!response.ok) throw new Error('Error en la respuesta de la API');
 
-            const servicio = await response.json();
-            idDelServicio = servicio.id;
+                    const servicio = await response.json();
+                    idDelServicio = servicio.id;
 
-            console.log(servicio);  // Depuración: Verificar los datos del servicio
+                    console.log(servicio); // Depuración: Verificar los datos del servicio
 
-            // Rellenar los campos del formulario con los datos del servicio
-           
-            document.getElementById('placa').value = servicio.placa;
-            document.getElementById('nombrePeaje').value = servicio.nombrePeaje;
-            document.getElementById('idCategoriaTarifa').value = servicio.categoriaTarifaId;
-            document.getElementById('valor').value = servicio.valor;
-            document.getElementById('fecha').value = servicio.fechaRegistro;
+                    // Rellenar los campos del formulario con los datos del servicio
 
-        } catch (error) {
-            console.error('Error al obtener los detalles del servicio:', error);
-        }
-    }
+                    document.getElementById('placa').value = servicio.placa;
+                    document.getElementById('nombrePeaje').value = servicio.nombrePeaje;
+                    document.getElementById('idCategoriaTarifa').value = servicio.categoriaTarifaId;
+                    document.getElementById('valor').value = servicio.valor;
+                    document.getElementById('fecha').value = servicio.fechaRegistro;
 
-    // Obtener el ID del servicio de los parámetros de la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-
-    console.log(id);  // Depuración: Verificar el ID obtenido de la URL
-
-    // Mostrar los detalles del servicio al cargar la página
-    await mostrarDetalleServicio(id);
-
-    // Agregar un evento al botón de editar
-    document.getElementById('btn-editar').addEventListener('click', function (event) {
-        event.preventDefault();
-
-        // Validar que todos los campos del formulario sean válidos
-        if (!Object.values(campos).every(value => value === true)) {
-            Swal.fire({
-                title: 'Error',
-                text: 'Por favor, asegúrate de que todos los campos estén correctos.',
-                icon: 'error',
-                confirmButtonText: 'OK',
-                backdrop: false
-            });
-            return;
-        }
-
-        // Obtener los valores de los campos del formulario
-        const servicioActualizado = {
-            id: idDelServicio,
-            placa: document.getElementById('placa').value,
-            nombrePeaje: document.getElementById('nombrePeaje').value,
-            categoriaTarifaId: document.getElementById('idCategoriaTarifa').value,
-            valor: document.getElementById('valor').value,
-            fechaRegistro: document.getElementById('fecha').value,
-
-        };
-
-        console.log(servicioActualizado);  // Depuración: Verificar los datos actualizados
-        
-        // Enviar la solicitud PUT al servidor para actualizar el servicio
-        axios.put(`${apiUrl}/${idDelServicio}`, servicioActualizado)
-    .then(response => {
-        if (response.data.success) {
-            Swal.fire({
-                title: 'Servicio actualizado correctamente',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                backdrop: false
-            }).then(() => {
-                window.location.href = '/';
-            });
-        } else {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudo actualizar el servicio correctamente',
-                icon: 'error',
-                confirmButtonText: 'OK',
-                backdrop: false
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Error al actualizar el Servicio:', error);
-
-        if (error.response) {
-            console.error('Respuesta del servidor:', error.response.data);
-            console.error('Código de estado HTTP:', error.response.status);
-
-            // Mostrar mensajes de error específicos
-            if (error.response.data.errors && error.response.data.errors.peaje) {
-                Swal.fire({
-                    title: 'Error de validación',
-                    text: `Error en el campo 'peaje': ${error.response.data.errors.peaje[0]}`,
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    backdrop: false
-                });
-            } else if (error.response.data.errors && error.response.data.errors['$.fechaRegistro']) {
-                Swal.fire({
-                    title: 'Error de validación',
-                    text: `Error en el campo 'fecha de registro': ${error.response.data.errors['$.fechaRegistro'][0]}`,
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    backdrop: false
-                });
-            } else {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Hubo un problema al intentar actualizar el Servicio. Por favor, intenta de nuevo más tarde.',
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    backdrop: false
-                });
+                } catch (error) {
+                    console.error('Error al obtener los detalles del servicio:', error);
+                }
             }
-        } else {
-            // Manejar otros errores que no sean de respuesta del servidor
-            Swal.fire({
-                title: 'Error',
-                text: 'Hubo un problema al intentar actualizar el Servicio. Por favor, intenta de nuevo más tarde.',
-                icon: 'error',
-                confirmButtonText: 'OK',
-                backdrop: false
+
+            // Obtener el ID del servicio de los parámetros de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            console.log(id); // Depuración: Verificar el ID obtenido de la URL
+
+            // Mostrar los detalles del servicio al cargar la página
+            await mostrarDetalleServicio(id);
+
+            // Agregar un evento al botón de editar
+            document.getElementById('btn-editar').addEventListener('click', function (event) {
+                event.preventDefault();
+
+                // Validar que todos los campos del formulario sean válidos
+                if (!Object.values(campos).every(value => value === true)) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Por favor, asegúrate de que todos los campos estén correctos.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        backdrop: false
+                    });
+                    return;
+                }
+
+                // Obtener los valores de los campos del formulario
+                const servicioActualizado = {
+                    id: idDelServicio,
+                    placa: document.getElementById('placa').value,
+                    nombrePeaje: document.getElementById('nombrePeaje').value,
+                    categoriaTarifaId: document.getElementById('idCategoriaTarifa').value,
+                    valor: document.getElementById('valor').value,
+                    fechaRegistro: document.getElementById('fecha').value,
+
+                };
+
+                console.log(servicioActualizado); // Depuración: Verificar los datos actualizados
+
+                // Enviar la solicitud PUT al servidor para actualizar el servicio
+                axios.put(`${apiUrl}/${idDelServicio}`, servicioActualizado)
+                    .then(response => {
+                        if (response.data.success) {
+                            Swal.fire({
+                                title: 'Servicio actualizado correctamente',
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                                backdrop: false
+                            }).then(() => {
+                                window.location.href = '/';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'No se pudo actualizar el servicio correctamente',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                backdrop: false
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al actualizar el Servicio:', error);
+
+                        if (error.response) {
+                            console.error('Respuesta del servidor:', error.response.data);
+                            console.error('Código de estado HTTP:', error.response.status);
+
+                            // Mostrar mensajes de error específicos
+                            if (error.response.data.errors && error.response.data.errors.peaje) {
+                                Swal.fire({
+                                    title: 'Error de validación',
+                                    text: `Error en el campo 'peaje': ${error.response.data.errors.peaje[0]}`,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK',
+                                    backdrop: false
+                                });
+                            } else if (error.response.data.errors && error.response.data.errors['$.fechaRegistro']) {
+                                Swal.fire({
+                                    title: 'Error de validación',
+                                    text: `Error en el campo 'fecha de registro': ${error.response.data.errors['$.fechaRegistro'][0]}`,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK',
+                                    backdrop: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Hubo un problema al intentar actualizar el Servicio. Por favor, intenta de nuevo más tarde.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK',
+                                    backdrop: false
+                                });
+                            }
+                        } else {
+                            // Manejar otros errores que no sean de respuesta del servidor
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Hubo un problema al intentar actualizar el Servicio. Por favor, intenta de nuevo más tarde.',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                backdrop: false
+                            });
+                        }
+                    });
             });
-        }
-    });
 
-
-    });
-});
-
+        });
     </script>
 </body>
+
 </html>

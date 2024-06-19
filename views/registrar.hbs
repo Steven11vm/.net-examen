@@ -166,6 +166,12 @@
             <input type="text" name="fecha" id="fecha" placeholder="DD/MM/AAAA">
             <div class="formulario__input-error">Fecha no válida</div>
         </div>
+        <div class="input-box" id="grupo__observacion">
+            <label>Observacion</label><br>
+            <input type="text" name="observacion" id="observacion">
+            <div class="formulario__input-error">Observacion no valida</div>
+        </div>
+        
         <button class="Btn-registrar" type="submit">Registrar</button>
         
         <a type="button" href="/" class="Btn-delete8">Cerrar</a>
@@ -242,7 +248,8 @@
 
     const expresiones = {
         placa: /^[A-Za-z0-9]{6}$/,
-        fecha: /^\d{2}\/\d{2}\/\d{4}$/
+        fecha: /^\d{2}\/\d{2}\/\d{4}$/,
+        observacion: /^.{0,100}$/
     };
 
     const campos = {
@@ -251,6 +258,7 @@
         idCategoriaTarifa: true, // Ahora no obligatorio
         valor: true, // Ahora no obligatorio
         fecha: true,
+        observacion: false,
     };
 
     const validarFormulario = (e) => {
@@ -269,6 +277,9 @@
                 break;
             case "fecha":
                 validarCampo(expresiones.fecha, e.target, 'fecha');
+                break;
+            case "observacion":
+                validarCampo(expresiones.observacion, e.target, 'observacion');
                 break;
         }
     }
@@ -303,7 +314,7 @@
         const idCategoriaTarifa = document.getElementById('idCategoriaTarifa').value;
         const valor = document.getElementById('valor').value;
         const fecha = document.getElementById('fecha').value;
-
+        const observacion = document.getElementById('observacion').value;
         // Validar formato de fecha DD/MM/AAAA
         const regexFecha = /^\d{2}\/\d{2}\/\d{4}$/;
         if (!regexFecha.test(fecha)) {
@@ -318,6 +329,7 @@
         const data = {
             placa: placa,
             fecha: fechaFormateada,
+            observacion: observacion,
             exportacion: true,
         };
 
